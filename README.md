@@ -130,6 +130,7 @@ QQ 侧要一个 OneBot 实现（NapCat 的坑、微信 bridge 怎么跑、怎么
 ## 7. 开发
 
 ```bash
+npm install                    # 只为跑测试装 ws（运行期它是 DSH 自带的依赖）
 node tools/onebot-e2e.mjs      # 全流程端到端（对着 mock OneBot 服务器）
 node tools/client-half-check.mjs   # 浏览器那半（含样式自愈）
 node tools/card-check.mjs      # 卡片渲染

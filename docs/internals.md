@@ -37,6 +37,7 @@ RPC**；"点一行切目标"就是往设置里写 `pinSessionId`，和聊天里�
 ## 开发
 
 ```bash
+npm install                        # 唯一一个开发依赖：ws（下面几个 Node 工具用它起 mock 服务器）
 node --check lib/index.js
 node tools/onebot-e2e.mjs         # OneBot 全链路，对着 mock 服务器跑，不需要 NapCat
 node tools/card-check.mjs         # 卡片渲染：Markdown 子集、头像头栏、缺头像/空文本的降级

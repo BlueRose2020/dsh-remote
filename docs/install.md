@@ -17,6 +17,8 @@
 也就是说：**把 `profiles/plugins/dsh-plugin-remote` 整个目录搬到别处（或推到 GitHub），
 插件就是完整的**；别人拿到之后放到自己机器的同一个相对位置、把模板里那一行粘进自己的 profile
 补丁，就装好了。运行需要的只有 Python 侧依赖：`pip install -r requirements.txt`（Pillow）。
+`ws`（OneBot 的 WebSocket 客户端）不用装：它是 **DSH 自己**的依赖，插件跑在 DSH 进程里，
+按 profile 的 `node_modules` 解析 —— 只有在本机跑 `tools/*.mjs` 里的测试时才要 `npm install`。
 
 配到别的机器上时注意两件事：
 
