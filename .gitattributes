@@ -1,0 +1,7 @@
+# Keep the repository's own line endings LF; the working tree on Windows may show
+# CRLF and that is fine.
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.jpg binary
+*.webp binary

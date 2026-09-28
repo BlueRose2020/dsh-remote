@@ -1,0 +1,35 @@
+{
+  "name": "dsh-plugin-remote",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DeepSeek Harness plugin: drive the harness from a chat app (WeChat 文件传输助手 or your own QQ via NapCat) and get reports back",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "external": []
+    }
+  },
+  "files": [
+    "lib/",
+    "bridge/",
+    "cordis.patch.yml",
+    "requirements.txt",
+    "README.md"
+  ],
+  "scripts": {
+    "check": "node --check lib/index.js && node --check lib/bridge.js && node --check lib/client.js"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.2",
+    "@deepseek-ai/dsh-tools": "^0.1.5-rc.2",
+    "@deepseek-ai/schemastery": "^3.18.2"
+  }
+}

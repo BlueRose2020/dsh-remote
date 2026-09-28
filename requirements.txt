@@ -1,0 +1,14 @@
+# Python dependencies for the `wechat-local` transport.
+#
+# Only needed when `transports` includes `wechat-local`; the `onebot`
+# transport is pure Node (ws).
+#
+#   python -m pip install -r requirements.txt
+#
+# Windows OCR itself is a Windows feature, not a pip package: install the
+# Chinese Simplified OCR language via
+#   Settings > Time & language > Language & region > 中文(简体) > 语言选项 > 可选语言功能
+uiautomation>=2.0.18
+pywin32>=306
+pillow>=10.0.0
+winsdk>=1.0.0b10

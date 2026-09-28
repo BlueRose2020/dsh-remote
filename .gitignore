@@ -1,0 +1,24 @@
+# Local scratch — not part of the plugin.
+#
+# `tools/one-off/` holds the mechanical patch appliers used while building this
+# plugin (each one edits lib/*.py/js once and refuses to run twice). They are kept
+# on disk as a change log but are noise in a repository; `git add -f` if you ever
+# want them published.
+tools/one-off/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Outputs of the tools (regenerate with `node tools/ui-preview.mjs`), and the
+# temporary state a probe run leaves behind.
+ui-preview-*.png
+ui-preview-*.html
+.probe-state.json
+*.log
+
+# Editor / OS noise
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini

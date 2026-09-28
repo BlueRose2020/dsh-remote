@@ -1,0 +1,62 @@
+# Template profile layer for the web profile.
+#
+# This is a *sanitised template*, not a mirror of the running configuration: it
+# shows the row plus the knobs worth knowing, with machine-specific values
+# (`debugLog` path, `ownerId`, report settings, modes) left out or at their
+# defaults. The live installation is
+#   $DSH_HOME/profiles/web/cordis.patch.yml
+# and that file is the source of truth; copy this row there to reinstall, or into
+# another profile's patch.
+#
+# A relative `name` is resolved against the directory holding the patch file,
+# so the row below expects this plugin to sit at
+#   $DSH_HOME/profiles/plugins/dsh-plugin-remote
+# and the patch file to be $DSH_HOME/profiles/web/cordis.patch.yml.
+
+- insert:
+    - id: remote-channel
+      # The loader imports this specifier directly, and Node's ESM loader does
+      # not accept a bare directory URL, so the entry file is named explicitly.
+      # A relative path is anchored to the directory holding the patch file.
+      name: ../plugins/dsh-plugin-remote/lib/index.js
+      config:
+        # Turn the whole plugin on/off without uninstalling it.
+        enabled: true
+        # Enable one or both transports. `wechat-local` needs the Windows
+        # WeChat client plus the Python bridge; `onebot` needs a local
+        # NapCatQQ / Lagrange.Core / LLOneBot WebSocket server.
+        transports:
+          - wechat-local
+          # - onebot
+
+        notifyOnError: true
+        notifyOnQuestion: true
+        notifyOnApproval: true
+        notifyOnTurnEnd: false
+
+        remoteControl: true
+        # Only messages starting with this prefix are treated as commands.
+        # Set to '' to forward every inbound message.
+        commandPrefix: '#'
+        # 'auto' follows the most recently active root session, or pin one
+        # exact session id here.
+        targetSession: auto
+
+        wechat:
+          pythonPath: python
+          pollIntervalMs: 5000
+          statusIntervalMs: 60000
+
+        # Fill in and enable together with the `onebot` transport above.
+        onebot:
+          url: ws://127.0.0.1:3001
+          accessToken: ''
+          # Your own QQ number (private chat) or a group number when
+          # `target: group`. Empty means "reply to the last person who spoke".
+          ownerId: ''
+          target: private
+          acceptSelfMessages: true
+          # Lock the channel down once you know the ids (see the README).
+          privateAllowFrom: []
+          # Empty means every group message is ignored.
+          groupAllowFrom: []
