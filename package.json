@@ -1,5 +1,5 @@
 {
-  "name": "dsh-plugin-remote",
+  "name": "dsh-remote",
   "version": "0.1.0",
   "private": true,
   "description": "DeepSeek Harness plugin: drive the harness from a chat app (WeChat 文件传输助手 or your own QQ via NapCat) and get reports back",

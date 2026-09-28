@@ -1,11 +1,11 @@
 <div align="center">
-  <img src="assets/avatars/default.png" width="104" alt="dsh-plugin-remote logo">
-  <h1>dsh-plugin-remote</h1>
+  <img src="assets/avatars/default.png" width="104" alt="dsh-remote logo">
+  <h1>dsh-remote</h1>
   <p><strong>用 QQ 或微信，在手机上远程指挥 DeepSeek Harness。</strong></p>
   <p>选择工作区、派发任务、回答提问，并接收执行结果与桌面截图。</p>
 
   <p>
-    <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/BlueRose2020/dsh-plugin-remote?style=flat-square"></a>
+    <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/BlueRose2020/dsh-remote?style=flat-square"></a>
     <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-2563eb?style=flat-square">
     <img alt="Platform" src="https://img.shields.io/badge/platform-DeepSeek%20Harness-111827?style=flat-square">
     <img alt="Channels" src="https://img.shields.io/badge/channels-QQ%20%7C%20WeChat-16a34a?style=flat-square">
@@ -26,11 +26,11 @@
 ## 为什么需要它
 
 DeepSeek Harness 通常运行在电脑上，但任务不一定需要你一直坐在电脑前。
-`dsh-plugin-remote` 把聊天软件变成 DSH 的远程控制台：消息进入指定会话，执行结果自动回到手机。
+`dsh-remote` 把聊天软件变成 DSH 的远程控制台：消息进入指定会话，执行结果自动回到手机。
 
 ```text
-QQ / 微信  ── 指令 ──▶  dsh-plugin-remote  ── 用户消息 ──▶  DeepSeek Harness
-QQ / 微信  ◀─ 汇报 ──  dsh-plugin-remote  ◀─ 事件 / 工具 ──  DeepSeek Harness
+QQ / 微信  ── 指令 ──▶  dsh-remote  ── 用户消息 ──▶  DeepSeek Harness
+QQ / 微信  ◀─ 汇报 ──  dsh-remote  ◀─ 事件 / 工具 ──  DeepSeek Harness
 ```
 
 ## 功能亮点
@@ -52,7 +52,7 @@ QQ / 微信  ◀─ 汇报 ──  dsh-plugin-remote  ◀─ 事件 / 工具 ─
 <summary><strong>查看手机端命令卡片</strong></summary>
 
 <p align="center">
-  <img src="docs/help-card.png" width="440" alt="dsh-plugin-remote help card">
+  <img src="docs/help-card.png" width="440" alt="dsh-remote help card">
 </p>
 
 </details>
@@ -71,7 +71,7 @@ QQ / 微信  ◀─ 汇报 ──  dsh-plugin-remote  ◀─ 事件 / 工具 ─
 1. 将仓库放到 DSH 插件目录：
 
    ```text
-   $DSH_HOME/profiles/plugins/dsh-plugin-remote
+   $DSH_HOME/profiles/plugins/dsh-remote
    ```
 
 2. 安装 Python 依赖：
@@ -91,7 +91,7 @@ QQ / 微信  ◀─ 汇报 ──  dsh-plugin-remote  ◀─ 事件 / 工具 ─
    ```yaml
    - insert:
        - id: remote-channel
-         name: ../plugins/dsh-plugin-remote/lib/index.js
+         name: ../plugins/dsh-remote/lib/index.js
          config:
            enabled: true
            transports:
@@ -184,7 +184,7 @@ QQ / 微信  ◀─ 汇报 ──  dsh-plugin-remote  ◀─ 事件 / 工具 ─
 
 ```mermaid
 flowchart LR
-  QQ[QQ / OneBot] -->|消息| Remote[dsh-plugin-remote]
+  QQ[QQ / OneBot] -->|消息| Remote[dsh-remote]
   WeChat[微信 / 本地桥接] -->|消息| Remote
   Remote -->|prompt / steer| DSH[DeepSeek Harness]
   DSH -->|会话与 Agent 事件| Remote
@@ -224,7 +224,7 @@ node tools/ui-preview.mjs        # 生成浅色 / 深色 UI 预览
 
 ## 贡献
 
-欢迎提交 [Issue](https://github.com/BlueRose2020/dsh-plugin-remote/issues) 或 Pull Request。
+欢迎提交 [Issue](https://github.com/BlueRose2020/dsh-remote/issues) 或 Pull Request。
 提交前请先运行 `npm test`，并确保相关行为有对应测试。
 
 ## 许可证

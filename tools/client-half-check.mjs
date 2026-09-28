@@ -144,7 +144,7 @@ const main = async () => {
     process.stderr.write('\n1 CHECK(S) FAILED\n')
     process.exit(1)
   }
-  check('its module id is the package name', entry.id === 'dsh-plugin-remote', String(entry.id))
+  check('its module id is the package name', entry.id === 'dsh-remote', String(entry.id))
   check('it exposes a factory', typeof entry.factory === 'function')
 
   const clientModule = entry.factory(makeRequire(required))

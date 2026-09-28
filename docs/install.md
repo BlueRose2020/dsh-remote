@@ -15,7 +15,7 @@
 
 部署与依赖：
 
-- 复制 `profiles/plugins/dsh-plugin-remote` 到目标机器的相同相对路径，将模板中的挂载行加入 profile 补丁。
+- 复制 `profiles/plugins/dsh-remote` 到目标机器的相同相对路径，将模板中的挂载行加入 profile 补丁。
 - Python 依赖：`pip install -r requirements.txt`（Pillow）。
 - `ws` 由 DSH 提供，插件从 profile 的 `node_modules` 解析；仅运行 `tools/*.mjs` 时需要 `npm install`。
 - 挂载行的 `name` 相对补丁文件解析，插件目录须位于 `$DSH_HOME/profiles/plugins/` 下，否则改为绝对路径或 npm 包名。
@@ -176,4 +176,4 @@ python -m pip install -r requirements.txt
 
 - 挂载行改为 `disabled: true`（保留代码）。
 - 以备份覆盖 `cordis.patch.yml`。
-- 删除 `$DSH_HOME/profiles/plugins/dsh-plugin-remote` 目录。
+- 删除 `$DSH_HOME/profiles/plugins/dsh-remote` 目录。

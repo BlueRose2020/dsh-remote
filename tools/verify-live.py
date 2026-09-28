@@ -62,7 +62,7 @@ def latest_url(log_path: str) -> str | None:
 
 
 def fetch(url: str, timeout: float = 15.0) -> tuple[int, str]:
-    request = urllib.request.Request(url, headers={"User-Agent": "dsh-plugin-remote-verify"})
+    request = urllib.request.Request(url, headers={"User-Agent": "dsh-remote-verify"})
     try:
         with urllib.request.urlopen(request, timeout=timeout) as response:
             body = response.read()
@@ -79,7 +79,7 @@ def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--log", default="", help="`dsh web` startup log holding the token URL")
     parser.add_argument("--url", default="", help="an authenticated URL to probe instead")
-    parser.add_argument("--plugin", default="dsh-plugin-remote", help="plugin id to look for")
+    parser.add_argument("--plugin", default="dsh-remote", help="plugin id to look for")
     args = parser.parse_args(argv[1:])
 
     url = args.url or (latest_url(args.log) if args.log else None)

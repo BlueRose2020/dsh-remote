@@ -8,7 +8,7 @@
 浏览器半是**手写**的 `lib/client.js`，没有构建步骤：
 
 ```js
-window.__ModuleLoader__.load({ id: 'dsh-plugin-remote', factory: (require) => { … } })
+window.__ModuleLoader__.load({ id: 'dsh-remote', factory: (require) => { … } })
 ```
 
 宿主把每个插件包的 `dsh.client` 声明（在 `package.json` 里，`platform: 'web'`）变成一个

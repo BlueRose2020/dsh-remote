@@ -10,7 +10,7 @@
 #
 # A relative `name` is resolved against the directory holding the patch file,
 # so the row below expects this plugin to sit at
-#   $DSH_HOME/profiles/plugins/dsh-plugin-remote
+#   $DSH_HOME/profiles/plugins/dsh-remote
 # and the patch file to be $DSH_HOME/profiles/web/cordis.patch.yml.
 
 - insert:
@@ -18,7 +18,7 @@
       # The loader imports this specifier directly, and Node's ESM loader does
       # not accept a bare directory URL, so the entry file is named explicitly.
       # A relative path is anchored to the directory holding the patch file.
-      name: ../plugins/dsh-plugin-remote/lib/index.js
+      name: ../plugins/dsh-remote/lib/index.js
       config:
         # Turn the whole plugin on/off without uninstalling it.
         enabled: true

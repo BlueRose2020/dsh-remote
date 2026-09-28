@@ -162,7 +162,7 @@ function html(node) {
 
 // --------------------------------------------------------- load the client half
 const css = []
-const styleElement = { id: 'dsh-plugin-remote-style', textContent: '' }
+const styleElement = { id: 'dsh-remote-style', textContent: '' }
 globalThis.window = {
   __ModuleLoader__: {
     load: (entry) => {
