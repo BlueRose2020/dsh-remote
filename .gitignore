@@ -10,10 +10,6 @@ tools/one-off/
 __pycache__/
 *.pyc
 
-# A local avatar override: drop your own 256x256 PNG here and the cards use it.
-# Deliberately not published — the repository ships the neutral `default.png`.
-assets/avatars/me.png
-
 # Outputs of the tools (regenerate with `node tools/ui-preview.mjs`), and the
 # temporary state a probe run leaves behind.
 ui-preview-*.png

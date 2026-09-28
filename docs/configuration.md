@@ -29,7 +29,7 @@
 | `pythonPath` | `python` | 截图助手用的 Python |
 | `imageReplies` | `true` | 信息类回复出图；`#img on/off` 在聊天里改 |
 | `imageMaxWidth` | `900` | 卡片最长边像素 |
-| `avatar` | 空 | 卡片头像路径；空=用自带的 `assets/avatars/default.png`（或本机的 `me.png`），`-`=不画头像。面板里上传的头像优先于它 |
+| `avatar` | 空 | 卡片头像路径；空=用自带的 `assets/avatars/default.png`，`-`=不画头像。面板里上传的头像优先于它 |
 | `nickname` / `signature` | 空 | 卡片页脚署名（`昵称 · 签名 · 时间`）；面板里能直接改 |
 | `modes` | `[]` | 工作模式：`{name, label, description, commands, imageReplies, richAcks, messageMode, fields, prompt}` 的数组；`#mode` 切换，见「工作模式」与「配置页」两节 |
 | `modes[].fields` | `[]` | 模式自己的表单：`{key, label, type, placeholder, help, options, rows, default}`，`type` 为 `string`/`text`/`bool`/`number`/`select`。配置页自动生成控件，值存进 `modeData` |

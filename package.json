@@ -27,7 +27,8 @@
     "README.md"
   ],
   "scripts": {
-    "check": "node --check lib/index.js && node --check lib/bridge.js && node --check lib/client.js"
+    "check": "node --check lib/index.js && node --check lib/bridge.js && node --check lib/client.js && node --check lib/desktop.js && node --check lib/state-store.js && node --check lib/text-image.js && node --check lib/channels/onebot.js && node --check lib/channels/wechat-local.js",
+    "test": "npm run check && node tools/card-check.mjs && node tools/client-half-check.mjs && node tools/ratelimit-check.mjs && node tools/onebot-e2e.mjs"
   },
   "license": "MIT",
   "devDependencies": {

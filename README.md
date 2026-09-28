@@ -120,7 +120,7 @@ QQ 侧要一个 OneBot 实现（NapCat 的坑、微信 bridge 怎么跑、怎么
 | `screenshotMaxWidth` | `0` | 截图最长边；**0 = 原生不缩放**（最清楚） |
 | `screenshotMonitor` | `primary` | 截哪块屏：`primary` / `all` / 序号 `2`；`#shot screen` 在聊天里改 |
 | `imageReplies` | `true` | 信息类回复出图；`#img on/off` 在聊天里改 |
-| `avatar` | 空 | 卡片头像；空 = 用自带的 `assets/avatars/default.png`，`-` = 不画头像 |
+| `avatar` | 空 | 卡片头像；空 = 用项目内置的 `assets/avatars/default.png`，`-` = 不画头像；面板上传优先 |
 | `accessGate` | `off` | `off` = 密码只用于完全权限；`all` = 所有指令都要先授权 |
 | `debugLog` | 空 | 追加式 JSONL 追踪（收到什么、匹配到哪条命令、回复有没有送达） |
 
@@ -131,13 +131,11 @@ QQ 侧要一个 OneBot 实现（NapCat 的坑、微信 bridge 怎么跑、怎么
 
 ```bash
 npm install                    # 只为跑测试装 ws（运行期它是 DSH 自带的依赖）
-node tools/onebot-e2e.mjs      # 全流程端到端（对着 mock OneBot 服务器）
-node tools/client-half-check.mjs   # 浏览器那半（含样式自愈）
-node tools/card-check.mjs      # 卡片渲染
+npm test                       # 语法 + 卡片 + 浏览器 + 限流 + OneBot 全链路
+node tools/onebot-e2e.mjs      # 也可只跑 OneBot 端到端（对着 mock 服务器）
 python tools/path_check.py     # 路径换行 / 省略规则
 node tools/ui-preview.mjs      # 出预览图（双主题）
 node tools/make-help-card.mjs  # 重新生成 README 里那张 #help 卡片
-python tools/make-default-avatar.py   # 重新生成默认头像
 ```
 
 改代码前先看 [`docs/internals.md`](docs/internals.md)：里面写了卡片渲染的实现、

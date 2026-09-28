@@ -19,7 +19,7 @@ import { renderTextImage, DEFAULT_TEXT_IMAGE_SCRIPT } from '../lib/text-image.js
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const PLUGIN = join(HERE, '..')
-// The bundled mark, so the check works in a fresh clone (no local `me.png`).
+// The bundled avatar, so the check exercises the same fallback as production.
 const AVATAR = join(PLUGIN, 'assets', 'avatars', 'default.png')
 const PYTHON = process.env.DSH_TEST_PYTHON ?? 'python'
 

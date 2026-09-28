@@ -24,13 +24,11 @@
 
 - 那行 `name: ../plugins/dsh-plugin-remote/lib/index.js` 是**相对补丁文件**解析的，所以插件目录
   必须在 `$DSH_HOME/profiles/plugins/` 下（或者把 `name` 写成绝对路径 / npm 包名）。
-- `assets/avatars/default.png` 是插件自带的默认头像（卡片和面板都用它）。想换成自己的：
-  把自己的图存成同目录下的 `me.png`（本地覆盖，`.gitignore` 排除），或者在配置里写
-  `avatar: <你的图片路径>`，再或者在面板里上传一张（上传的那张优先）。
+- `assets/avatars/default.png` 是插件自带的默认头像（卡片和面板都用它）。想换成自己的，
+  可以在配置里写 `avatar: <你的图片路径>`，或直接在面板上传一张（上传的那张优先）。
 
 仓库里还带了两个只有开发时才想跑的东西，用 `.gitignore` 排除了：`tools/one-off/`
-（当初改代码用的一次性补丁脚本，纯记录）和 `ui-preview-*.png` / `.probe-state.json`（工具的产物）；
-`assets/avatars/me.png` 也在排除之列 —— 那是"本机的头像"，不属于仓库。
+（当初改代码用的一次性补丁脚本，纯记录）和 `ui-preview-*.png` / `.probe-state.json`（工具的产物）。
 
 ## onebot（QQ）需要的前置
 

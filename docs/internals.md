@@ -38,7 +38,8 @@ RPC**；"点一行切目标"就是往设置里写 `pinSessionId`，和聊天里�
 
 ```bash
 npm install                        # 唯一一个开发依赖：ws（下面几个 Node 工具用它起 mock 服务器）
-node --check lib/index.js
+npm run check                      # 检查全部运行时代码的语法
+npm test                           # 核心离线回归：卡片、浏览器、限流、OneBot
 node tools/onebot-e2e.mjs         # OneBot 全链路，对着 mock 服务器跑，不需要 NapCat
 node tools/card-check.mjs         # 卡片渲染：Markdown 子集、头像头栏、缺头像/空文本的降级
 node tools/ratelimit-check.mjs    # 限流：超限丢弃并提示一次
@@ -95,9 +96,9 @@ Markdown 子集（标题变大、代码围栏画成面板）、长文本换行�
 开关写入、模式按钮写 `mode`、面板、**配置页**（通用页写昵称/密码/投递方式、会话树点选写
 `pinSessionId`、取消锁定、模式表单写 `modeData`、模式页说明文字）、命名空间不可用时两边都渲染空，
 外加**裁剪坐标换算**（居中/放大/拖动/越界夹紧/竖图）、`relativeTime` 的逐值断言，以及
-**树与折叠**（层级用"祖先分隔线"而不是字符画、哪些行有可用箭头、折起来子树消失且只影响那一棵树、
+**树与折叠**（真实 `WorkspaceView.workspaceId` 稳定键、归档会话过滤、层级用"祖先分隔线"而不是字符画、哪些行有可用箭头、折起来子树消失、
 `+n` 计数、藏了当前目标时那一行补 `← 当前`、**再点一下就展开**、**点缩进 gutter 也能折且不会误切目标**、
-工作区整行可点、全部折叠/展开、折叠不动目标、**折叠状态跨标签存活**）。
+工作区整行可点、子代理不可选、全部折叠/展开、折叠不动目标、**折叠状态跨标签存活**）。
 
 `tools/ui-preview.mjs` 覆盖 17 项，并且是**看图**用的：它不需要 DSH、不需要 React、不联网 ——
 用一个 80 行的迷你渲染器把这个插件**真实的组件**（同一个 bundle，`require('react')` 换成

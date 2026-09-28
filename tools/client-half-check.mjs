@@ -353,7 +353,7 @@ const main = async () => {
     current: 's1',
   })
   const fakeUseWorkspaces = (selector) => selector({
-    items: [{ id: 'w1', title: '订单服务', path: 'D:\\proj\\alpha', sessionIds: ['s1'] }],
+    items: [{ workspaceId: 'w1', title: '订单服务', path: 'D:\\proj\\alpha', sessionIds: ['s1'] }],
     archivedSessionIds: [],
   })
   const chipProps = {
@@ -403,7 +403,7 @@ const main = async () => {
     opened.buttons.length === 4 && opened.buttons.some((b) => b.children === 'focus'),
     `${opened.buttons.length} buttons`)
   check('the panel names the current target and the last speaker',
-    opened.texts.some((t) => t.includes('目标') && t.includes('beta') && t.includes('刚发过言')),
+    opened.texts.some((t) => t.includes('目标') && t.includes('beta') && t.includes('最近')),
     opened.texts.join(' | '))
   buttonWithText(opened.buttons, 'focus')?.props?.onClick?.()
   check('a mode button writes the mode the chat would switch to',
@@ -436,7 +436,7 @@ const main = async () => {
     // one helper for either commit path.
     find()?.props?.[commitKey ?? 'onBlur']?.({ key: 'Enter', target: { value } })
   }
-  commitField((node) => node.props?.type === 'text' && node.props?.placeholder === '卡片署名', '小D 2')
+  commitField((node) => node.props?.type === 'text' && node.props?.placeholder === '卡片页脚', '小D 2')
   check('the page writes the nickname',
     chipWrites.some(([field, value]) => field === 'nickname' && value === '小D 2'),
     JSON.stringify(chipWrites))
@@ -447,7 +447,7 @@ const main = async () => {
   const steerRow = renderChip().buttons
   let steerToggle = null
   walk(render(chip.component, chipProps), (node) => {
-    if (node.props?.label === '派活插入正在跑的那一轮') steerToggle = node
+    if (node.props?.label === '投递方式') steerToggle = node
   })
   steerToggle?.props?.onToggle(true)
   check('the page can switch the delivery mode too',
@@ -464,11 +464,11 @@ const main = async () => {
   const caretsOf = (found) => found.nodes.filter((node) =>
     (node.props?.className ?? '').includes('rc-tree-caret'))
   const treeRows = sessionRowsOf(treeTab)
-  check('the session tree lists every session, in both groupings',
-    treeRows.length === 6
+  check('the session tree lists each session once in its workspace hierarchy',
+    treeRows.length === 3
       && treeTab.texts.some((t) => t.includes('订单服务'))
       && treeTab.texts.some((t) => t.includes('未分组'))
-      && treeTab.texts.some((t) => t.includes('分支')),
+      && treeTab.texts.some((t) => t.includes('工作区 / 分支')),
     `${treeRows.length} rows, texts=${treeTab.texts.join(' | ')}`)
   /** Depth is drawn as one hairline guide per ancestor, inside the fold gutter. */
   const gutterOf = (found, key) => {
@@ -482,8 +482,8 @@ const main = async () => {
     return kids.filter((kid) => (kid?.props?.className ?? '') === 'rc-tree-guide').length
   }
   check('the tree nests the subagent under its parent with one more guide line',
-    guideCount(treeTab, 'g-s3') === guideCount(treeTab, 'g-s1') + 1 && guideCount(treeTab, 'l-s1') === 0,
-    `s1=${guideCount(treeTab, 'g-s1')} guides, s3=${guideCount(treeTab, 'g-s3')} guides, lineage root=${guideCount(treeTab, 'l-s1')}`)
+    guideCount(treeTab, 'g-s3') === guideCount(treeTab, 'g-s1') + 1,
+    `s1=${guideCount(treeTab, 'g-s1')} guides, s3=${guideCount(treeTab, 'g-s3')} guides`)
   check('the web tree draws no bracket art (that belongs on the phone card)',
     !JSON.stringify(treeRows.map((row) => row.children)).includes('└─'),
     JSON.stringify(treeRows.map((row) => row.children)).slice(0, 160))
@@ -497,12 +497,11 @@ const main = async () => {
     caretsOf(found).find((caret) => caret.props?.['data-row'] === key)
   const rowWithKey = (found, key) => sessionRowsOf(found).find((row) => row.props['data-key'] === key)
   const groupedRows = (found) => sessionRowsOf(found).filter((row) => (row.props['data-key'] ?? '').startsWith('g-'))
-  const lineageRows = (found) => sessionRowsOf(found).filter((row) => (row.props['data-key'] ?? '').startsWith('l-'))
-  // 5 grouped rows (2 workspace headers + s1 + s3 + s2) + 3 lineage rows, of which
-  // 4 hang over something and so get a working caret.
+  // 5 grouped rows (2 workspace headers + s1 + s3 + s2), of which three hang
+  // over something and so get a working caret.
   check('every tree row gets a caret slot, but only parents get a working one',
-    carets.length === 8
-      && carets.filter((caret) => caret.props.title === '折叠').length === 4
+    carets.length === 5
+      && carets.filter((caret) => caret.props.title === '折叠').length === 3
       && carets.filter((caret) => caret.props.title === '').every((caret) => caret.props.tabIndex === -1),
     `${carets.length} carets: ${carets.map((c) => `${c.props['data-row']}=${c.props.title || 'leaf'}`).join(', ')}`)
   check('a parent caret advertises that it can fold',
@@ -513,9 +512,8 @@ const main = async () => {
   const folded = renderChip()
   check('folding a node hides its subtree — in that tree only',
     rowWithKey(folded, 'g-s3') === undefined
-      && rowWithKey(folded, 'g-s1') !== undefined
-      && rowWithKey(folded, 'l-s3') !== undefined,
-    `grouped=${groupedRows(folded).map((r) => r.props['data-key']).join(',')} lineage=${lineageRows(folded).map((r) => r.props['data-key']).join(',')}`)
+      && rowWithKey(folded, 'g-s1') !== undefined,
+    `grouped=${groupedRows(folded).map((r) => r.props['data-key']).join(',')}`)
   caretFor('g-s1', folded)?.props?.onClick?.({ stopPropagation: () => {} })
   check('clicking the same arrow again expands it', rowWithKey(renderChip(), 'g-s3') !== undefined,
     `grouped=${groupedRows(renderChip()).map((r) => r.props['data-key']).join(',')}`)
@@ -533,7 +531,7 @@ const main = async () => {
   check('a workspace row folds wherever it is clicked',
     (() => {
       const group = renderChip().nodes.find((node) => (node.props?.className ?? '') === 'rc-tree-group'
-        && node.props['data-key'] === 'g-ws-w1')
+        && node.props['data-key'] === 'g-ws-w1-0')
       return typeof group?.props?.onClick === 'function'
     })(), 'group rows are clickable as a whole')
 
@@ -547,7 +545,7 @@ const main = async () => {
     JSON.stringify(chipWrites.slice(-3)))
 
   // A whole workspace folds in one click, which is the point of the grouped tree.
-  caretFor('g-ws-w1', folded)?.props?.onClick?.({ stopPropagation: () => {} })
+  caretFor('g-ws-w1-0', folded)?.props?.onClick?.({ stopPropagation: () => {} })
   const workspaceFolded = renderChip()
   check('a workspace group folds all of its sessions away',
     rowWithKey(workspaceFolded, 'g-s1') === undefined
@@ -558,15 +556,15 @@ const main = async () => {
 
   buttonWithText(renderChip().buttons, '全部折叠')?.props?.onClick?.()
   check('「全部折叠」 leaves only what has nothing above it',
-    lineageRows(renderChip()).length === 2 && groupedRows(renderChip()).length === 0,
-    `lineage=${lineageRows(renderChip()).map((r) => r.props['data-key']).join(',')} grouped=${groupedRows(renderChip()).length}`)
+    groupedRows(renderChip()).length === 0,
+    `grouped=${groupedRows(renderChip()).length}`)
   check('a fold that swallows the current target says so on the folded row',
     (renderChip().texts.includes('← 当前')
       && groupedRows(renderChip()).every((row) => row.props['data-key'] !== 'g-s2')),
     `texts=${renderChip().texts.filter((t) => t.includes('当前')).join(',')}`)
   buttonWithText(renderChip().buttons, '全部展开')?.props?.onClick?.()
   check('「全部展开」 brings everything back',
-    sessionRowsOf(renderChip()).length === 6 && !renderChip().texts.includes('+1'),
+    sessionRowsOf(renderChip()).length === 3 && !renderChip().texts.includes('+1'),
     `${sessionRowsOf(renderChip()).length} rows`)
 
   // Folding must survive looking at another tab: the operator folds a branch, goes
@@ -580,11 +578,17 @@ const main = async () => {
   caretFor('g-s1')?.props?.onClick?.({ stopPropagation: () => {} })
   check('and unfolding still works afterwards', rowWithKey(renderChip(), 'g-s3') !== undefined)
 
+  const beforeSubagent = chipWrites.length
+  rowWithKey(renderChip(), 'g-s3')?.props?.onClick?.()
+  check('a displayed subagent cannot become the remote target',
+    chipWrites.length === beforeSubagent && rowWithKey(renderChip(), 'g-s3')?.props?.['aria-disabled'] === true,
+    JSON.stringify(chipWrites.slice(beforeSubagent)))
+
   treeRows.find((row) => row.props.title === 's1')?.props?.onClick?.()
   check('clicking a tree row pins that session',
     chipWrites.some(([field, value]) => field === 'pinSessionId' && value === 's1'),
     JSON.stringify(chipWrites))
-  buttonWithText(renderChip().buttons, '取消锁定（跟随最近活跃会话）')?.props?.onClick?.()
+  buttonWithText(renderChip().buttons, '取消锁定')?.props?.onClick?.()
   check('and the page can release the pin',
     chipWrites.some(([field, value]) => field === 'pinSessionId' && value === ''),
     JSON.stringify(chipWrites))
@@ -602,7 +606,7 @@ const main = async () => {
       && modeTab.texts.includes('人设') && modeTab.texts.includes('语气'),
     `textareas=${textarea.length} value=${textarea[0]?.props?.value} texts=${modeTab.texts.join(' | ')}`)
   check('a mode tab says its text reaches the model',
-    modeTab.texts.some((t) => t.includes('注入到系统提示词')),
+    modeTab.texts.some((t) => t.includes('注入系统提示词')),
     modeTab.texts.join(' | '))
   commitField((node) => node.type === 'textarea', '你是猫娘，说话带喵')
   const saved = chipWrites.filter(([field]) => field === 'modeData').map(([, value]) => value)
@@ -615,6 +619,26 @@ const main = async () => {
   check('it exports its pure UI helpers for the offline check',
     ui !== undefined && typeof ui.cropSourceRect === 'function' && typeof ui.treeRows === 'function',
     typeof ui)
+
+  // Real WorkspaceView rows use `workspaceId`, and archived sessions remain in
+  // workspace.sessionIds. This exact production shape guards the key collision
+  // and giant-history regressions seen in the live tree.
+  const productionTrees = ui.treeRows({
+    ids: ['live', 'archived'],
+    byId: {
+      live: { id: 'live', displayTitle: 'live', running: false, updatedAt: Date.now() },
+      archived: { id: 'archived', displayTitle: 'old', running: false, updatedAt: Date.now() },
+    },
+  }, [
+    { workspaceId: 'wa', title: 'same', path: 'D:\\a', sessionIds: ['live'] },
+    { workspaceId: 'wb', title: 'same', path: 'D:\\b', sessionIds: ['archived'] },
+  ], '', ['archived'])
+  const productionKeys = productionTrees.grouped.map((row) => row.key)
+  check('real workspace ids stay unique and archived sessions stay hidden',
+    new Set(productionKeys).size === productionKeys.length
+      && productionKeys.includes('g-ws-wa-0')
+      && !productionTrees.grouped.some((row) => row.id === 'archived'),
+    JSON.stringify(productionKeys))
 
   // `cropSourceRect` is the whole point of the avatar flow: the operator picks a
   // *region*, so the kept square must follow the pan and the zoom exactly.

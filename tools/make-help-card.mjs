@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url'
 
 const PLUGIN_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 const OUT = join(PLUGIN_ROOT, 'docs', 'help-card.png')
-/** The neutral mark the repository ships, so the picture carries no personal avatar. */
+/** The avatar shipped by the repository and used by a fresh installation. */
 const AVATAR = join(PLUGIN_ROOT, 'assets', 'avatars', 'default.png')
 
 const portArg = process.argv.indexOf('--port')
@@ -123,8 +123,8 @@ async function main() {
     onebot: { url: `ws://127.0.0.1:${PORT}`, ownerId: '', acceptSelfMessages: true },
     // The card is the point: let the plugin render and send it.
     imageReplies: true,
-    // `avatar` wins over the author's local `assets/avatars/me.png`, so the picture
-    // publishes the neutral mark even on the machine that has a personal override.
+    // Pass it explicitly so this generated documentation always shows the
+    // repository's current default avatar.
     avatar: AVATAR,
     announceOnReady: false,
     maxCommandsPerMinute: 0,

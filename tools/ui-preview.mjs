@@ -16,7 +16,7 @@
  * and the avatar crop dialog.
  */
 import { execFileSync } from 'node:child_process'
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -273,7 +273,7 @@ const sessions = {
   current: 's1',
 }
 const workspaces = {
-  items: [{ id: 'w1', title: '订单服务', path: 'D:\\work\\projects\\orders', sessionIds: ['s1'] }],
+  items: [{ workspaceId: 'w1', title: '订单服务', path: 'D:\\work\\projects\\orders', sessionIds: ['s1'] }],
   archivedSessionIds: [],
 }
 const props = {
@@ -325,7 +325,6 @@ const surfaces = {
     { label: 'open the page', match: (node) => typeof node.children === 'string' && node.children.includes('打开配置页') },
     { label: 'tree tab', match: byText('会话树') },
     { label: 'fold the grouped parent', match: (node) => node.props?.['data-row'] === 'g-s1', args: [{ stopPropagation: () => {} }] },
-    { label: 'fold the lineage parent', match: (node) => node.props?.['data-row'] === 'l-s1', args: [{ stopPropagation: () => {} }] },
   ]),
   'page: 模式（人格）': surface([
     { label: 'open the panel', match: (node) => node.type === 'button' && node.props?.className?.includes('rc-chip') },
@@ -437,22 +436,47 @@ check('a headless browser is available for the screenshot', browser !== undefine
 
 mkdirSync(OUT_DIR, { recursive: true })
 const shots = []
+// A dedicated profile forces a separate browser process. Without it, Windows may
+// forward the command to an already-running interactive Chrome instance, return 0,
+// and silently skip `--screenshot`.
+const waitForFile = (path, timeoutMs = 10_000) => {
+  const deadline = Date.now() + timeoutMs
+  while (!existsSync(path) && Date.now() < deadline) {
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 100)
+  }
+  return existsSync(path)
+}
 for (const theme of ['light', 'dark']) {
   const htmlPath = join(OUT_DIR, `ui-preview-${theme}.html`)
   const pngPath = join(OUT_DIR, `ui-preview-${theme}.png`)
   writeFileSync(htmlPath, page(theme, theme === 'dark' ? TOKENS_DARK : TOKENS_LIGHT), 'utf8')
   if (browser !== undefined) {
-    execFileSync(browser, [
-      '--headless=new',
-      '--disable-gpu',
-      '--hide-scrollbars',
-      '--force-device-scale-factor=2',
-      '--window-size=1320,2600',
-      `--screenshot=${pngPath}`,
-      `file:///${htmlPath.replace(/\\/g, '/')}`,
-    ], { stdio: 'ignore', timeout: 90_000 })
+    const browserProfile = mkdtempSync(join(tmpdir(), `dsh-ui-preview-${theme}-`))
+    try {
+      execFileSync(browser, [
+        '--headless',
+        '--disable-gpu',
+        '--no-sandbox',
+        '--hide-scrollbars',
+        '--no-first-run',
+        `--user-data-dir=${browserProfile}`,
+        '--force-device-scale-factor=2',
+        '--window-size=1320,2600',
+        `--screenshot=${pngPath}`,
+        `file:///${htmlPath.replace(/\\/g, '/')}`,
+      ], { stdio: 'ignore', timeout: 90_000 })
+    } finally {
+      try {
+        rmSync(browserProfile, { recursive: true, force: true, maxRetries: 3, retryDelay: 200 })
+      } catch {
+        // A late Chrome child can keep its temporary profile locked for a moment;
+        // preview output is still valid and the OS temp cleaner owns the fallback.
+      }
+    }
   }
-  const exists = existsSync(pngPath)
+  // Chrome on Windows can let its launcher exit just before the renderer has
+  // flushed the screenshot, especially while an interactive Chrome is open.
+  const exists = waitForFile(pngPath)
   check(`${theme} screenshot written`, exists, pngPath)
   if (exists) shots.push(pngPath)
 }
