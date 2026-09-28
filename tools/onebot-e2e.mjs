@@ -597,9 +597,9 @@ async function main() {
 
   // --- forwarding to the (now pinned) session
   const before = prompts.length
-  server.inject(privateMessage('#继续把剩下的投完'))
+  server.inject(privateMessage('继续把剩下的投完'))
   await sleep(900)
-  check('plain command forwarded as a prompt', prompts.slice(before).includes('继续把剩下的投完'), JSON.stringify(prompts))
+  check('plain text without a prefix is forwarded as a prompt', prompts.slice(before).includes('继续把剩下的投完'), JSON.stringify(prompts))
   check('acknowledgement sent',
     /已(排队|插入)投递给/.test(sentText(lastSent(server))),
     sentText(lastSent(server)).slice(0, 160))
@@ -683,7 +683,7 @@ async function main() {
 
   // This forward is what makes the next turn a *remote* turn, which is the only
   // kind that reports.
-  server.inject(privateMessage('#给这个会话派个活'))
+  server.inject(privateMessage('给这个会话派个活'))
   await sleep(900)
   check('second forward landed on the pinned session', prompts.at(-1) === '给这个会话派个活', JSON.stringify(prompts.at(-1)))
 
@@ -747,17 +747,15 @@ async function main() {
   await sleep(900)
   check('non-target session not reported', server.sent.length === beforeOther)
 
-  // --- prefix filtering
-  // A bare message must not be forwarded, but silence is not acceptable either:
-  // the sender gets one hint (per cooldown window) naming the prefix.
+  // --- prefixes distinguish built-in controls from ordinary conversation
   const beforePrefix = server.sent.length
   const beforePrompts = prompts.length
-  server.inject(privateMessage('这条没有前缀，应该被忽略'))
+  server.inject(privateMessage('status'))
   await sleep(700)
-  check('message without prefix not forwarded', prompts.length === beforePrompts,
-    `prompts=${prompts.length} expected=${beforePrompts}`)
-  check('bare message answered with a prefix hint',
-    server.sent.length === beforePrefix + 1 && sentText(lastSent(server)).includes('#'),
+  check('bare text is forwarded even when it resembles a built-in command',
+    prompts.length === beforePrompts + 1 && prompts.at(-1) === 'status', JSON.stringify(prompts.slice(beforePrompts)))
+  check('bare text receives the normal delivery acknowledgement, not command output',
+    server.sent.length === beforePrefix + 1 && /已(排队|插入)投递给/.test(sentText(lastSent(server))),
     JSON.stringify(server.sent.slice(beforePrefix).map(sentText)))
 
   // --- group allowlist
@@ -850,7 +848,7 @@ async function main() {
     sentText(lastSent(server)).includes('#on'),
     sentText(lastSent(server)).slice(0, 240))
   const beforeQuiet = prompts.length
-  server.inject(privateMessage('#这条不该被转发'))
+  server.inject(privateMessage('这条不该被转发'))
   await sleep(900)
   check('#off stops forwarding', prompts.length === beforeQuiet, JSON.stringify(prompts.slice(beforeQuiet)))
   server.inject(privateMessage('#status'))
@@ -860,7 +858,7 @@ async function main() {
     sentText(lastSent(server)).slice(0, 160))
   server.inject(privateMessage('#on'))
   await sleep(800)
-  server.inject(privateMessage('#重新打开之后要能派活'))
+  server.inject(privateMessage('重新打开之后要能派活'))
   await sleep(900)
   check('#on resumes forwarding',
     prompts.slice(beforeQuiet).includes('重新打开之后要能派活'),
@@ -919,7 +917,7 @@ async function main() {
   // A restricted mode must not swallow prose: it exists to *narrow commands*,
   // not to stop the operator from talking to the session.
   const beforeProse = prompts.length
-  server.inject(privateMessage('#专注模式下还能说话吗'))
+  server.inject(privateMessage('专注模式下还能说话吗'))
   await sleep(900)
   check('a restricted mode still forwards prose to the session',
     prompts.slice(beforeProse).includes('专注模式下还能说话吗'),
@@ -1144,7 +1142,7 @@ async function main() {
 
   // No terminator: the next instruction that reaches the session carries the files.
   const beforeFileEnd = prompts.length
-  server.inject(privateMessage('#把这份简历投了'))
+  server.inject(privateMessage('把这份简历投了'))
   await sleep(1000)
   const delivered = prompts.slice(beforeFileEnd)
   check('the next instruction carries text and attachments in ONE prompt',

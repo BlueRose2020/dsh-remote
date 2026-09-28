@@ -7,7 +7,7 @@
 |---|---|---|
 | `enabled` | `true` | 总开关 |
 | `transports` | `[wechat-local]` | `onebot` / `wechat-local`，可同时开 |
-| `commandPrefix` | `#` | 只有这个前缀开头的消息才当指令；设成 `''` 则全部转发 |
+| `commandPrefix` | `#` | 插件管理命令前缀；普通文本始终直接投递。设成 `''` 时沿用旧式无前缀命令解析 |
 | `targetSession` | `auto` | `auto` 跟随最近活跃的顶层会话，也可写死会话 id |
 | `remoteControl` | `true` | 是否把消息转成会话 prompt |
 | `reportOnTurnEnd` | `true` | 每轮结束把回答推回聊天 |
