@@ -353,7 +353,7 @@ const main = async () => {
     current: 's1',
   })
   const fakeUseWorkspaces = (selector) => selector({
-    items: [{ id: 'w1', title: '秋招', path: 'D:\\proj\\alpha', sessionIds: ['s1'] }],
+    items: [{ id: 'w1', title: '订单服务', path: 'D:\\proj\\alpha', sessionIds: ['s1'] }],
     archivedSessionIds: [],
   })
   const chipProps = {
@@ -466,7 +466,7 @@ const main = async () => {
   const treeRows = sessionRowsOf(treeTab)
   check('the session tree lists every session, in both groupings',
     treeRows.length === 6
-      && treeTab.texts.some((t) => t.includes('秋招'))
+      && treeTab.texts.some((t) => t.includes('订单服务'))
       && treeTab.texts.some((t) => t.includes('未分组'))
       && treeTab.texts.some((t) => t.includes('分支')),
     `${treeRows.length} rows, texts=${treeTab.texts.join(' | ')}`)

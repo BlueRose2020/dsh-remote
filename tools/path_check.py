@@ -37,7 +37,7 @@ def path_run_index(runs):
 
 def main() -> int:
     # --- elision keeps the volume and the last two segments -------------------
-    short = r"D:\tool\programming\DSH\秋招"
+    short = r"D:\work\projects\orders"
     check("a path that already fits is untouched", t.elide_path(short) == short, t.elide_path(short))
 
     long_path = r"D:\tool\programming\DSH\test\archive-2026\branch"

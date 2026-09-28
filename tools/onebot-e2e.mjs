@@ -1095,10 +1095,10 @@ async function main() {
     sentText(lastSent(server)).includes('投简历-新名字'),
     sentText(lastSent(server)).slice(0, 160))
 
-  server.inject(privateMessage('#rename ws 秋招项目'))
+  server.inject(privateMessage('#rename ws 订单服务'))
   await sleep(800)
   check('#rename ws renames the workspace',
-    workspaceRenames.length === 1 && workspaceRenames[0].title === '秋招项目',
+    workspaceRenames.length === 1 && workspaceRenames[0].title === '订单服务',
     JSON.stringify(workspaceRenames))
 
   // --- attachment capture: #file start → a file segment → #file end
@@ -1308,7 +1308,7 @@ async function main() {
     {
       id: 'name',
       question: '新项目叫什么？',
-      options: [{ label: '秋招助手' }, { label: '简历投递' }],
+      options: [{ label: '订单助手' }, { label: '数据看板' }],
     },
   ]
 
@@ -1420,7 +1420,7 @@ async function main() {
   check('both answers are submitted in question order',
     batch?.answers?.length === 2
       && batch.answers[0].id === 'cleanup' && batch.answers[0].selected[0] === '先留着'
-      && batch.answers[1].id === 'name' && batch.answers[1].selected[0] === '秋招助手',
+      && batch.answers[1].id === 'name' && batch.answers[1].selected[0] === '订单助手',
     JSON.stringify(batch))
 
   // (e) `#提交` submits whatever is there, skipping the rest

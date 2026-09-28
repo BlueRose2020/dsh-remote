@@ -19,8 +19,11 @@
   "files": [
     "lib/",
     "bridge/",
+    "assets/avatars/default.png",
+    "docs/",
     "cordis.patch.yml",
     "requirements.txt",
+    "LICENSE",
     "README.md"
   ],
   "scripts": {

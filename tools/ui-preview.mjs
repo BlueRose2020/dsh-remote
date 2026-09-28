@@ -214,7 +214,7 @@ check('the chip registered in the session header', chipSlot !== undefined)
 
 // ------------------------------------------------------------------- fixtures
 const now = Date.now()
-const avatarFile = join(PLUGIN_ROOT, 'assets', 'avatars', 'me.png')
+const avatarFile = join(PLUGIN_ROOT, 'assets', 'avatars', 'default.png')
 const avatarDataUrl = `data:image/png;base64,${readFileSync(avatarFile).toString('base64')}`
 
 const MODE_SCHEMA = [
@@ -244,8 +244,8 @@ const settingsValue = {
   modeSchema: JSON.stringify(MODE_SCHEMA),
   modeData: JSON.stringify({ persona: { persona: '你是一只蓝发猫娘，说话带「喵」。', tone: '热情', emoji: true } }),
   pinSessionId: 's2',
-  pinLabel: '秋招助手（秋招）',
-  speakerLabel: '简历筛子（秋招）',
+  pinLabel: '订单助手（订单服务）',
+  speakerLabel: '数据看板（订单服务）',
   deliverMode: 'queue',
   imageReplies: true,
   avatarData: avatarDataUrl,
@@ -265,15 +265,15 @@ const scope = {
 const sessions = {
   ids: ['s1', 's2', 's3', 's4'],
   byId: {
-    s1: { id: 's1', displayTitle: '秋招助手', updatedAt: now - 60_000, running: true },
-    s2: { id: 's2', displayTitle: '简历筛子', updatedAt: now - 4 * 60_000, running: false },
-    s3: { id: 's3', displayTitle: '抓岗位的 explore', parentId: 's1', origin: 'subagent', updatedAt: now - 20_000, running: false },
+    s1: { id: 's1', displayTitle: '订单助手', updatedAt: now - 60_000, running: true },
+    s2: { id: 's2', displayTitle: '数据看板', updatedAt: now - 4 * 60_000, running: false },
+    s3: { id: 's3', displayTitle: '抓日志的 explore', parentId: 's1', origin: 'subagent', updatedAt: now - 20_000, running: false },
     s4: { id: 's4', displayTitle: '分叉：换个说法', parentId: 's2', updatedAt: now - 2 * 60 * 60_000, running: false },
   },
   current: 's1',
 }
 const workspaces = {
-  items: [{ id: 'w1', title: '秋招', path: 'D:\\tool\\programming\\DSH\\秋招', sessionIds: ['s1'] }],
+  items: [{ id: 'w1', title: '订单服务', path: 'D:\\work\\projects\\orders', sessionIds: ['s1'] }],
   archivedSessionIds: [],
 }
 const props = {

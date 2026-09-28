@@ -152,7 +152,7 @@ def command_re():
 # ------------------------------------------------------------------- paths
 #
 # A path is the one token a card is full of that a reader scans rather than reads:
-# `D:\tool\programming\DSH\秋招` is "the 秋招 project" and nothing else. Drawing
+# `D:\work\projects\orders` is "the orders project" and nothing else. Drawing
 # it as prose both makes it look like part of a sentence and lets the wrapper chop
 # it in half, so it gets its own run kind, its own font, and its own break rule.
 PATH_RE = re.compile(
@@ -174,7 +174,7 @@ def path_max_columns() -> int:
 
 def elide_path(path: str, limit: int | None = None) -> str:
     r"""
-    Shorten a long path in the middle: `D:\…\DSH\秋招`.
+    Shorten a long path in the middle: `D:\…\projects\orders`.
 
     The head names the volume and the tail names the project, so the middle is the
     only part worth dropping — and dropping it is what keeps a path from wrapping

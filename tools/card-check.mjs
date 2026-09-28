@@ -19,7 +19,8 @@ import { renderTextImage, DEFAULT_TEXT_IMAGE_SCRIPT } from '../lib/text-image.js
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const PLUGIN = join(HERE, '..')
-const AVATAR = join(PLUGIN, 'assets', 'avatars', 'me.png')
+// The bundled mark, so the check works in a fresh clone (no local `me.png`).
+const AVATAR = join(PLUGIN, 'assets', 'avatars', 'default.png')
 const PYTHON = process.env.DSH_TEST_PYTHON ?? 'python'
 
 const failures = []
