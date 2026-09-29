@@ -1,0 +1,36 @@
+# Ready-to-PR catalog entry for the DSH plugin market.
+#
+# dsh-market does not keep its own catalog: it reads
+# https://awesome-dsh-plugin.com/plugins.json, which is generated from
+# https://github.com/awesome-dsh-plugin/awesome-dsh-plugin — one YAML file per plugin
+# under `data/plugins/`. Getting listed is a PR that adds exactly one file:
+#
+#     data/plugins/BlueRose2020__dsh-remote.yml
+#
+# Copy the block below (without this comment header) into that file, commit, open the
+# PR. The two READMEs in that repo are generated from the data files — do not edit
+# them by hand.
+#
+# Checklist the reviewers check (from that repo's contributing.md):
+#   * `package.json` declares `dsh.bundle`                      -> yes, see package.json
+#   * a root `cordis.patch.yml` exists and its `name:` resolves  -> yes, `name: dsh-remote`
+#   * the repo carries the `dsh-plugin` GitHub topic             -> TODO (repo setting, not a file)
+#   * the repo is at least one day old                           -> yes
+#   * the description matches the code, no marketing words       -> keep it that way
+#
+# Optional but recommended — a prebuilt tarball makes the market skip the source
+# build. Attach `dsh-remote-<version>.tgz` (`npm pack`) to a GitHub Release and add:
+#
+#     tarball: https://github.com/BlueRose2020/dsh-remote/releases/latest/download/dsh-remote.tgz
+#
+# Keep the asset name free of the version if you use `latest/download/`: that URL
+# resolves `latest` at request time but takes the filename literally, so a versioned
+# name 404s the moment the next release is cut. Pin the tag instead if you want the
+# version in the name.
+
+url: https://github.com/BlueRose2020/dsh-remote
+name: BlueRose2020/dsh-remote
+category: remote
+description:
+  en: Send tasks to DeepSeek Harness from QQ or WeChat on your phone, and get the results and desktop screenshots back in the chat.
+  zh: 用手机上的 QQ 或微信给 DeepSeek Harness 派活、选工作区和会话、回答 Agent 的提问，执行结果与桌面截图自动推回聊天。

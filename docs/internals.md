@@ -194,6 +194,42 @@ python tools/restart-dsh.py --port 3099   # 只对 3099 做 kill + 重启 + 验�
 > 手机发来的指令靠「最后一次派活的会话」恢复（见
 > [configuration.md](configuration.md#目标会话是怎么定的) 第 4 条）。
 
+## 上架插件市场（dsh-market）
+
+市场本身不维护目录：它实时读 <https://awesome-dsh-plugin.com/plugins.json>，那份目录由
+[awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin) 生成，一个插件一个
+YAML 文件。所以「上架」= 给那个仓库提一个**只加一个文件**的 PR，条目内容已经写好放在
+[`market-entry.yml`](market-entry.yml)，复制成 `data/plugins/BlueRose2020__dsh-remote.yml` 即可。
+
+插件这一侧要满足的（已经满足）：
+
+| 要求 | 这里怎么满足的 |
+|---|---|
+| `package.json` 声明 **`dsh.bundle`**（只有 `dsh.client` 会被拒） | `"dsh": { "bundle": { "patch": "./cordis.patch.yml" }, "client": { … } }` |
+| 仓库根有 `cordis.patch.yml`，且 `name:` 能解析 | `name: dsh-remote`（**包名**，不是相对路径） |
+| 官方 `@deepseek-ai/*` 用 `peerDependencies`，且版本范围带预发布分支 | `^0.1.5-rc.2`（`^` 展开后含 0.1.5 元组上的预发布比较符） |
+| 描述与代码一致、不带营销词 | 条目里只写实际有的能力 |
+| 仓库带 `dsh-plugin` topic、创建满 1 天 | topic 是仓库设置，不在这份代码里 |
+
+**为什么 `dsh.bundle` 是关键**：装上之后启动器会自动应用包里的 `cordis.patch.yml`，
+所以用户不需要手工复制那一行 —— 这也是收录的门槛（只声明 `dsh.client` 的包装不上）。
+本地可以用一个一次性 profile 验证组合结果，不用动正在用的 profile：
+
+```bash
+dsh --profile bundletest --from-default-profile web --dump-config   # 打印组合树后退出
+dsh plugin --profile bundletest add github:BlueRose2020/dsh-remote
+# 再把 "dsh-remote" 加进 profiles/bundletest/package.json 的 dsh.profile.bundles，然后
+dsh --profile bundletest --dump-config | grep -A3 dsh-remote
+```
+
+**npm 名被占了**：`dsh-remote` 在 npm 上已存在（别人的包，0.8.23），所以直接
+`npm publish` 会失败。两条路：
+
+1. **不发 npm**（当前状态）：市场回退到从 GitHub 源码安装，能装、能用，只是安装时多一步。
+   想让它更快可以按 [`market-entry.yml`](market-entry.yml) 里的说明挂一个预构建 tarball。
+2. **改成 scope 发布**（例如 `@bluerose2020/dsh-remote`）：那要同步改三处 —— `package.json` 的
+   `name`、`cordis.patch.yml` 里的 `name:`（启动器按包名解析）、以及 `docs/` 里出现的安装命令。
+
 ## 已知限制
 
 - `wechat-local` 靠 OCR：代码、长英文、符号容易认错，**中文短指令最稳**；只能读到窗口里可见的消息

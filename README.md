@@ -68,25 +68,31 @@ QQ / 微信  ◀─ 汇报 ──  dsh-remote  ◀─ 事件 / 工具 ──  De
 
 ### 安装
 
-1. 将仓库放到 DSH 插件目录：
+**方式一：插件市场（推荐）**
+
+装好 [dsh-market](https://github.com/dsh-market/dsh-market) 后打开 **设置 → 插件市场**，搜索 `dsh-remote`，
+一键安装。市场会把依赖装进 profile，并把 `dsh-remote` 加进 `dsh.profile.bundles`。
+
+**方式二：官方安装命令**
+
+```bash
+dsh plugin --profile web add github:BlueRose2020/dsh-remote
+```
+
+这个命令会识别包里的 `dsh.bundle`：依赖装进 profile，`dsh-remote` 也会自动加进
+`$DSH_HOME/profiles/web/package.json` 的 `dsh.profile.bundles` —— 启动器靠那份列表加载这一层。
+（万一没加上，手写一行即可：`"bundles": ["@deepseek-ai/dsh-base", "@deepseek-ai/dsh-web-app", "dsh-remote"]`。）
+
+**方式三：手动放源码**（要改代码时用）
+
+1. 把仓库放到：
 
    ```text
    $DSH_HOME/profiles/plugins/dsh-remote
    ```
 
-2. 安装 Python 依赖：
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. 将 [`cordis.patch.yml`](cordis.patch.yml) 中的 `insert` 合并到：
-
-   ```text
-   $DSH_HOME/profiles/web/cordis.patch.yml
-   ```
-
-   最小配置：
+2. 将 [`cordis.patch.yml`](cordis.patch.yml) 中的 `insert` 合并到
+   `$DSH_HOME/profiles/web/cordis.patch.yml`，并把 `name:` 换成入口文件路径：
 
    ```yaml
    - insert:
@@ -99,11 +105,18 @@ QQ / 微信  ◀─ 汇报 ──  dsh-remote  ◀─ 事件 / 工具 ──  De
              # - wechat-local
    ```
 
-4. 重启 DSH。
+**Python 依赖**（三种方式都要）
 
-5. 打开 **设置 → 插件 → 远程通道**，启用需要的通道。
+```bash
+pip install -r requirements.txt
+```
+
+最后重启一次 DSH（新装 bundle 属于启动时组合的层；市场会给出重启提示），
+打开 **设置 → 插件 → 远程通道**，启用需要的通道。
 
 > [!TIP]
+> 插件自带 `dsh.bundle` manifest，所以「市场一键安装」和上面的命令行装法拿到的是同一份东西：
+> 包里的 [`cordis.patch.yml`](cordis.patch.yml) 会被启动器自动应用，不用手工复制。
 > NapCat、OneBot WebSocket 和微信 bridge 的完整配置见[安装指南](docs/install.md)。
 
 ## 基本使用

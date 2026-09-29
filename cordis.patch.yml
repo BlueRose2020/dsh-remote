@@ -1,24 +1,27 @@
-# Template profile layer for the web profile.
+# The plugin's bundle patch.
 #
-# This is a *sanitised template*, not a mirror of the running configuration: it
-# shows the row plus the knobs worth knowing, with machine-specific values
-# (`debugLog` path, `ownerId`, report settings, modes) left out or at their
-# defaults. The live installation is
-#   $DSH_HOME/profiles/web/cordis.patch.yml
-# and that file is the source of truth; copy this row there to reinstall, or into
-# another profile's patch.
+# `package.json` declares this file as `dsh.bundle.patch`, so it is applied for you:
+# install the package (`dsh plugin --profile web add github:BlueRose2020/dsh-remote`,
+# or one click in 设置 → 插件市场) and the profile launcher composes the row below —
+# there is nothing to copy by hand, and upgrading the package upgrades this file too.
 #
-# A relative `name` is resolved against the directory holding the patch file,
-# so the row below expects this plugin to sit at
-#   $DSH_HOME/profiles/plugins/dsh-remote
-# and the patch file to be $DSH_HOME/profiles/web/cordis.patch.yml.
+# What still *is* manual: the package name has to be listed in the profile's
+# `dsh.profile.bundles` (`$DSH_HOME/profiles/web/package.json`), which is what makes
+# the launcher load the layer at all. The market does that for you; a bare
+# `dsh plugin add` does not.
+#
+# Copy this row into `$DSH_HOME/profiles/web/cordis.patch.yml` only if you want to
+# override the defaults below — that user layer is applied after every bundle layer.
 
 - insert:
     - id: remote-channel
-      # The loader imports this specifier directly, and Node's ESM loader does
-      # not accept a bare directory URL, so the entry file is named explicitly.
-      # A relative path is anchored to the directory holding the patch file.
-      name: ../plugins/dsh-remote/lib/index.js
+      # The *package* name: the loader resolves it from the profile's node_modules.
+      # (`dsh plugin add` puts it there; the market does too.)
+      # Installing by path instead — the way to develop against a working copy — then
+      # write the entry file instead, because Node's ESM loader does not accept a bare
+      # directory URL. A relative path is anchored to the directory holding the patch:
+      #   name: ../plugins/dsh-remote/lib/index.js
+      name: dsh-remote
       config:
         # Turn the whole plugin on/off without uninstalling it.
         enabled: true

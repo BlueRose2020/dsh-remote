@@ -1,7 +1,6 @@
 {
   "name": "dsh-remote",
   "version": "0.1.0",
-  "private": true,
   "description": "DeepSeek Harness plugin: drive the harness from a chat app (WeChat 文件传输助手 or your own QQ via NapCat) and get reports back",
   "type": "module",
   "main": "lib/index.js",
@@ -11,6 +10,9 @@
     "./package.json": "./package.json"
   },
   "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
       "platform": "web",
       "external": []
@@ -20,12 +22,34 @@
     "lib/",
     "bridge/",
     "assets/avatars/default.png",
+    "横幅.png",
     "docs/",
     "cordis.patch.yml",
     "requirements.txt",
     "LICENSE",
     "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlueRose2020/dsh-remote.git"
+  },
+  "homepage": "https://github.com/BlueRose2020/dsh-remote#readme",
+  "bugs": {
+    "url": "https://github.com/BlueRose2020/dsh-remote/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "remote",
+    "onebot",
+    "napcat",
+    "qq",
+    "wechat"
+  ],
+  "engines": {
+    "dsh": ">=0.1.5-rc.2"
+  },
   "scripts": {
     "check": "node --check lib/index.js && node --check lib/bridge.js && node --check lib/client.js && node --check lib/desktop.js && node --check lib/state-store.js && node --check lib/text-image.js && node --check lib/channels/onebot.js && node --check lib/channels/wechat-local.js",
     "test": "npm run check && node tools/card-check.mjs && node tools/client-half-check.mjs && node tools/ratelimit-check.mjs && node tools/onebot-e2e.mjs"

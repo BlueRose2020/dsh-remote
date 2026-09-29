@@ -10,6 +10,12 @@ tools/one-off/
 __pycache__/
 *.pyc
 
+# Node dependencies. The plugin itself has none at runtime (`ws` and the
+# @deepseek-ai/* packages come from the DSH installation); these are produced by
+# `npm install`, which the tools need in order to run the test suites.
+node_modules/
+package-lock.json
+
 # Outputs of the tools (regenerate with `node tools/ui-preview.mjs`), and the
 # temporary state a probe run leaves behind.
 ui-preview-*.png
